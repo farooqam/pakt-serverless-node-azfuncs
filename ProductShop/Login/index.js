@@ -1,12 +1,12 @@
 const httpStatus = require('http-status');
 
-module.exports = async function (context, req) {
-    const contextLocal = context;
+module.exports = async function (functionContext, req) {
+    const context = functionContext;
 
-    contextLocal.log('JavaScript HTTP trigger function processed a request.');
+    context.log('JavaScript HTTP trigger function processed a request.');
 
     if (!req.body) {
-        contextLocal.res = {
+        context.res = {
             status: httpStatus.BAD_REQUEST,
             body: {
                 message: 'Please pass in login information.',
@@ -19,7 +19,7 @@ module.exports = async function (context, req) {
     const { username, password } = req.body;
 
     if (!username || !password) {
-        contextLocal.res = {
+        context.res = {
             status: httpStatus.BAD_REQUEST,
             body: {
                 message: 'Please pass in login information.',
@@ -29,7 +29,8 @@ module.exports = async function (context, req) {
         return;
     }
 
-    contextLocal.res = {
+    context.res = {
+        status: httpStatus.OK,
         body: {
             message: `User '${username}' with password '${password}' is logged in.`,
         },
