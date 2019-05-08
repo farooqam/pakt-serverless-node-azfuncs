@@ -18,6 +18,17 @@ module.exports = async function (context, req) {
 
     const { username, password } = req.body;
 
+    if (!username || !password) {
+        contextLocal.res = {
+            status: httpStatus.BAD_REQUEST,
+            body: {
+                message: 'Please pass in login information.',
+            },
+        };
+
+        return;
+    }
+
     contextLocal.res = {
         body: {
             message: `User '${username}' with password '${password}' is logged in.`,
