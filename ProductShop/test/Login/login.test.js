@@ -11,21 +11,23 @@ const should = chai.should();
 
 describe('login tests', () => {
     let context = null;
+    let request = null;
 
     beforeEach(() => {
         context = mockContext.createMockContext();
+        request = requestFactory.create();
     });
 
     afterEach(() => {
         context = null;
+        request = null;
     });
 
     it('returns ok with the expected message', async () => {
-        const request = requestFactory.create()
-            .withBody({
-                username: 'farooq',
-                password: '123',
-            });
+        request = request.withBody({
+            username: 'farooq',
+            password: '123',
+        });
 
         await runApiTest.runTest(api,
             context,
@@ -37,7 +39,33 @@ describe('login tests', () => {
     });
 
     it('returns bad request when body is missing', async () => {
-        const request = requestFactory.create();
+        await runApiTest.runTest(api,
+            context,
+            request,
+            (res) => {
+                res.status.should.equal(httpStatus.BAD_REQUEST);
+                res.body.message.should.equal('Please pass in login information.');
+            });
+    });
+
+    it('returns bad request when username is missing', async () => {
+        request = request.withBody({
+            password: '123',
+        });
+
+        await runApiTest.runTest(api,
+            context,
+            request,
+            (res) => {
+                res.status.should.equal(httpStatus.BAD_REQUEST);
+                res.body.message.should.equal('Please pass in login information.');
+            });
+    });
+
+    it('returns bad request when password is missing', async () => {
+        request = request.withBody({
+            username: 'farooq',
+        });
 
         await runApiTest.runTest(api,
             context,
