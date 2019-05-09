@@ -1,0 +1,21 @@
+config:
+  ensure:
+    maxErrorRate: 1
+  environments:
+    local:
+      target: "http://localhost:7071/api"
+      ensure:
+        p95: 20
+        p99: 30
+        max: 50
+      phases:
+        - duration: 30
+          arrivalRate: 10
+scenarios:
+  - name: "Login"
+    flow:
+      - post:
+          url: "/account/login"
+          json:
+            username: "farooq"
+            password: "1234!"
