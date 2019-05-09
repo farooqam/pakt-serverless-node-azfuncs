@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const sendResponse = require('../shared/sendResponse');
 
 module.exports = async function (functionContext, req) {
     const context = functionContext;
@@ -6,33 +7,16 @@ module.exports = async function (functionContext, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
 
     if (!req.body) {
-        context.res = {
-            status: httpStatus.BAD_REQUEST,
-            body: {
-                message: 'Please pass in login information.',
-            },
-        };
-
+        sendResponse(context, httpStatus.BAD_REQUEST, { message: 'Please pass in login information.' });
         return;
     }
 
     const { username, password } = req.body;
 
     if (!username || !password) {
-        context.res = {
-            status: httpStatus.BAD_REQUEST,
-            body: {
-                message: 'Please pass in login information.',
-            },
-        };
-
+        sendResponse(context, httpStatus.BAD_REQUEST, { message: 'Please pass in login information.' });
         return;
     }
 
-    context.res = {
-        status: httpStatus.OK,
-        body: {
-            message: `User '${username}' with password '${password}' is logged in.`,
-        },
-    };
+    sendResponse(context, httpStatus.OK, { message: `User '${username}' with password '${password}' is logged in.` });
 };
