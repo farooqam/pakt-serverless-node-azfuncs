@@ -5,7 +5,7 @@ const httpStatus = require('http-status');
 const api = require('../../Login/index');
 const runApiTest = require('../shared/runApiTest');
 const mockContext = require('../shared/mockContext');
-const requestExtensions = require('../shared/requestExtensions');
+const requestFactory = require('../shared/requestFactory');
 
 const should = chai.should();
 
@@ -21,12 +21,11 @@ describe('login tests', () => {
     });
 
     it('returns ok with the expected message', async () => {
-        const request = {
-            body: {
+        const request = requestFactory.create()
+            .withBody({
                 username: 'farooq',
                 password: '123',
-            },
-        };
+            });
 
         await runApiTest.runTest(api,
             context,
@@ -38,7 +37,7 @@ describe('login tests', () => {
     });
 
     it('returns bad request when body is missing', async () => {
-        const request = {};
+        const request = requestFactory.create();
 
         await runApiTest.runTest(api,
             context,
