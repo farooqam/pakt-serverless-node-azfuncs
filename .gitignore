@@ -60,3 +60,10 @@ typings/
 # next.js build output
 .next
 ProductShop/local.settings.json
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
