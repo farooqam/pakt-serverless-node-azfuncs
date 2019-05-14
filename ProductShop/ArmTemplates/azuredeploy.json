@@ -55,7 +55,7 @@
     "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
     "functionWorkerRuntime": "[parameters('runtime')]",
     "cosmosDbAccountName": "[concat(replace(parameters('appName'), '-', ''), 'db')]",
-    "userLoginsContainerName":  "UserLogins" 
+    "userLoginsContainerName": "UserLogins"
   },
   "resources": [
     {
@@ -207,6 +207,32 @@
         }
       }
     }
-  ]
+  ],
+  "outputs": {
+    "functionAppName": {
+      "type": "string",
+      "value": "[parameters('appName')]"
+    },
+    "functionAppEndpointUri": {
+      "type": "string",
+      "value": "[concat('https://', parameters('appName'), '.azurewebsites.net')]"
+    },
+    "cosmosDbAccountName": {
+      "type": "string",
+      "value": "[variables('cosmosDbAccountName')]"
+    },
+    "cosmosDbEndpointUri": {
+      "type": "string",
+      "value": "[concat('https://', variables('cosmosDbAccountName'), '.documents.azure.com:443')]"
+    },
+    "cosmosDbKey": {
+      "type": "string",
+      "value": "[listkeys(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbAccountName')),'2016-03-31').primaryMasterKey]"
+    },
+    "appInsightsInstrumentationKey": {
+      "type": "string",
+      "value": "[reference(concat('microsoft.insights/components/', parameters('appName'))).InstrumentationKey]"
+    }
   }
+}
   
