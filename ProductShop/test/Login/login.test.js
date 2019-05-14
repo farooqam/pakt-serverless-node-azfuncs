@@ -2,10 +2,12 @@
 /* eslint-disable no-unused-vars */
 const chai = require('chai');
 const httpStatus = require('http-status');
+const sinon = require('sinon');
 const api = require('../../Login/index');
 const runApiTest = require('../shared/runApiTest');
 const mockContext = require('../shared/mockContext');
 const requestFactory = require('../shared/requestFactory');
+const userService = require('../../Login/userService');
 
 const should = chai.should();
 
@@ -16,11 +18,13 @@ describe('login tests', () => {
     beforeEach(() => {
         context = mockContext.createMockContext();
         request = requestFactory.create();
+        userService.addUserLogin = sinon.stub();
     });
 
     afterEach(() => {
         context = null;
         request = null;
+        userService.addUserLogin.reset();
     });
 
     it('returns ok with the expected message', async () => {
@@ -28,6 +32,8 @@ describe('login tests', () => {
             username: 'farooq',
             password: '123',
         });
+
+        userService.addUserLogin.withArgs(sinon.match.any).returns(Promise.resolve('foo'));
 
         await runApiTest.runTest(api,
             context,
