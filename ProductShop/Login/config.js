@@ -1,7 +1,7 @@
 const config = {};
 
-config.endpoint = 'https://productshopfarooq.documents.azure.com:443/';
-config.masterKey = '2zg1wP9W3rKQz2FwcKqWt8SPqQAzQe9OyhftrqhWudC5BzSATRzVVw1k8pl2ZiRInIShnlweLCvpuMSUKuaZxg==';
+config.endpoint = 'https://foo/';
+config.masterKey = 'foo';
 
 config.database = {
     id: 'ProductShop',
