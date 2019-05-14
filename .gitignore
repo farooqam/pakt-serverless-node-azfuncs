@@ -67,3 +67,4 @@ ProductShop/local.settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+ProductShop/.vs/slnx.sqlite

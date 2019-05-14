@@ -1,5 +1,6 @@
 const httpStatus = require('http-status');
 const sendResponse = require('../shared/sendResponse');
+const userService = require('./userService');
 
 module.exports = async function (functionContext, req) {
     const context = functionContext;
@@ -18,5 +19,8 @@ module.exports = async function (functionContext, req) {
         return;
     }
 
-    sendResponse(context, httpStatus.OK, { message: `User '${username}' with password '${password}' is logged in.` });
+    await userService.addUserLogin(req.body)
+        .then(() => {
+            sendResponse(context, httpStatus.OK, { message: `User '${username}' with password '${password}' is logged in.` });
+        });
 };
