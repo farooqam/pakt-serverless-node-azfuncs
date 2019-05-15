@@ -211,20 +211,16 @@
   "outputs": {
     "functionAppName": {
       "type": "string",
-      "value": "[parameters('appName')]"
+      "value": "[reference(concat('Microsoft.Web/sites/', parameters('appName'))).name]"
     },
     "functionAppEndpointUri": {
       "type": "string",
-      "value": "[concat('https://', parameters('appName'), '.azurewebsites.net')]"
-    },
-    "cosmosDbAccountName": {
-      "type": "string",
-      "value": "[variables('cosmosDbAccountName')]"
+      "value": "[concat('https://', reference(concat('Microsoft.Web/sites/', parameters('appName'))).defaultHostName)]"
     },
     "cosmosDbEndpointUri": {
       "type": "string",
-      "value": "[concat('https://', variables('cosmosDbAccountName'), '.documents.azure.com:443')]"
-    },
+      "value": "[reference(variables('cosmosDbAccountName')).documentEndpoint]"
+    }, 
     "cosmosDbKey": {
       "type": "string",
       "value": "[listkeys(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbAccountName')),'2016-03-31').primaryMasterKey]"
