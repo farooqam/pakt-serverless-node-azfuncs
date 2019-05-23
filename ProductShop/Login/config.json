@@ -1,0 +1,11 @@
+{
+    "database": {
+        "id": "ProductShop"
+    },
+    "productCollection": {
+        "id": "Products"
+    },
+    "userLoginsCollection": {
+        "id": "UserLogins"
+    }
+}

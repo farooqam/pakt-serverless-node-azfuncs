@@ -55,7 +55,8 @@
 							"raw": "{\n\t\"username\": \"farooq\",\n\t\"password\": \"1234!\"\n}"
 						},
 						"url": {
-							"raw": "{{hostname}}/api/account/login",
+							"raw": "http://{{hostname}}/api/account/login",
+							"protocol": "http",
 							"host": [
 								"{{hostname}}"
 							],
@@ -94,12 +95,9 @@
 					"request": {
 						"method": "POST",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "{{hostname}}/api/account/login",
+							"raw": "http://{{hostname}}/api/account/login",
+							"protocol": "http",
 							"host": [
 								"{{hostname}}"
 							],
@@ -149,7 +147,8 @@
 							"raw": "{\n\t\"password\": \"1234!\"\n}"
 						},
 						"url": {
-							"raw": "{{hostname}}/api/account/login",
+							"raw": "http://{{hostname}}/api/account/login",
+							"protocol": "http",
 							"host": [
 								"{{hostname}}"
 							],
@@ -199,7 +198,8 @@
 							"raw": "{\n\t\"username\": \"farooq\"\n}"
 						},
 						"url": {
-							"raw": "{{hostname}}/api/account/login",
+							"raw": "http://{{hostname}}/api/account/login",
+							"protocol": "http",
 							"host": [
 								"{{hostname}}"
 							],
