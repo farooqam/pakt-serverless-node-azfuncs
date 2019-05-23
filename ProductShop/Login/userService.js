@@ -1,10 +1,9 @@
 const { CosmosClient } = require('@azure/cosmos');
-const config = require('./config');
+const config = require('./config.json');
 
-const { endpoint, masterKey } = config;
+const { endpoint, masterKey } = process.env;
 const client = new CosmosClient({ endpoint, auth: { masterKey } });
 const databaseId = config.database.id;
-//  const productCollection = config.productCollection.id;
 const userLoginsCollection = config.userLoginsCollection.id;
 
 const addUserLogin = async (user) => {
