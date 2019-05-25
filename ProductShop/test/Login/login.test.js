@@ -2,26 +2,36 @@
 /* eslint-disable no-unused-vars */
 const chai = require('chai');
 const httpStatus = require('http-status');
+const _ = require('lodash');
 const sinon = require('sinon');
 const api = require('../../Login/index');
 const runApiTest = require('../shared/runApiTest');
 const mockContext = require('../shared/mockContext');
 const requestFactory = require('../shared/requestFactory');
-const userService = require('../../Login/userService');
 
 const should = chai.should();
 
 describe('login tests', () => {
     let context = null;
     let request = null;
+    let originalProcessEnv = null;
+    let userService = null;
 
     beforeEach(() => {
+        originalProcessEnv = _.cloneDeep(process.env);
+        process.env.endpoint = 'http://foo';
+        process.env.masterKey = '12345';
+
+        // eslint-disable-next-line global-require
+        userService = require('../../Login/userService');
+
         context = mockContext.createMockContext();
         request = requestFactory.create();
         userService.addUserLogin = sinon.stub();
     });
 
     afterEach(() => {
+        process.env = _.cloneDeep(originalProcessEnv);
         context = null;
         request = null;
         userService.addUserLogin.reset();
