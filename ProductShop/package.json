@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "mocha --full-trace test/**/*.test.js"
+    "test": "cross-env endpoint=https://foo masterKey=12345 mocha --full-trace test/**/*.test.js"
   },
   "dependencies": {
     "@azure/cosmos": "^2.1.5",
@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "cross-env": "^5.2.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.2",
