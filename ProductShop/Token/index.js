@@ -5,7 +5,7 @@ const userService = require('../shared/userService');
 module.exports = async function (functionContext, req) {
     const context = functionContext;
 
-    context.log('JavaScript HTTP trigger function processed a request.');
+    context.log('Function \'Token\' processed a request.');
 
     if (!req.body) {
         sendResponse(context, httpStatus.BAD_REQUEST, { message: 'Please pass in login information.' });
@@ -19,8 +19,12 @@ module.exports = async function (functionContext, req) {
         return;
     }
 
-    await userService.addUserLogin(req.body)
-        .then(() => {
-            sendResponse(context, httpStatus.OK, { message: `User '${username}' with password '${password}' is logged in.` });
+    await userService.getTokenForUser(req.body)
+        .then((token) => {
+            if (token !== null) {
+                sendResponse(context, httpStatus.OK, { auth: true, token });
+            } else {
+                sendResponse(context, httpStatus.UNAUTHORIZED);
+            }
         });
 };
