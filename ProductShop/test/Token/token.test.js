@@ -3,7 +3,7 @@
 const chai = require('chai');
 const httpStatus = require('http-status');
 const sinon = require('sinon');
-const api = require('../../Login/index');
+const api = require('../../Token/index');
 const runApiTest = require('../shared/runApiTest');
 const mockContext = require('../shared/mockContext');
 const requestFactory = require('../shared/requestFactory');
@@ -11,36 +11,53 @@ const userService = require('../../shared/userService');
 
 const should = chai.should();
 
-describe('login tests', () => {
+describe('token tests', () => {
     let context = null;
     let request = null;
 
     beforeEach(() => {
         context = mockContext.createMockContext();
         request = requestFactory.create();
-        userService.addUserLogin = sinon.stub();
+        userService.getTokenForUser = sinon.stub();
     });
 
     afterEach(() => {
         context = null;
         request = null;
-        userService.addUserLogin.reset();
+        userService.getTokenForUser.reset();
     });
 
-    it('returns ok with the expected message', async () => {
+    it('returns ok with a token', async () => {
         request = request.withBody({
             username: 'farooq',
             password: '123',
         });
 
-        userService.addUserLogin.withArgs(sinon.match.any).returns(Promise.resolve('foo'));
+        userService.getTokenForUser.withArgs(sinon.match.any).returns(Promise.resolve('foo'));
 
         await runApiTest.runTest(api,
             context,
             request,
             (res) => {
                 res.status.should.equal(httpStatus.OK);
-                res.body.message.should.equal('User \'farooq\' with password \'123\' is logged in.');
+                res.body.auth.should.equal(true);
+                res.body.token.should.equal('foo');
+            });
+    });
+
+    it('returns unauthorized when a token could not be generated', async () => {
+        request = request.withBody({
+            username: 'farooq',
+            password: '123',
+        });
+
+        userService.getTokenForUser.withArgs(sinon.match.any).returns(Promise.resolve(null));
+
+        await runApiTest.runTest(api,
+            context,
+            request,
+            (res) => {
+                res.status.should.equal(httpStatus.UNAUTHORIZED);
             });
     });
 
