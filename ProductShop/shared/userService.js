@@ -26,34 +26,34 @@ const addUserLogin = async (user) => {
 };
 
 const getTokenForUser = async (user) => {
-    const hashedPassword = hashService.hash(user.password);
-
     const querySpec = {
-        query: 'SELECT TOP 1 r.id FROM root r WHERE r.username=@username AND r.password=@hashedPassword',
+        query: 'SELECT TOP 1 r.password, r.id FROM root r WHERE r.username=@username',
         parameters: [
             {
                 name: '@username',
                 value: user.username,
             },
-            {
-                name: '@hashedPassword',
-                value: hashedPassword,
-            },
         ],
     };
 
-    const { result: results } = await client
+    const results = await client
         .database(databaseId)
         .container(userLoginsCollection)
         .items
-        .query(querySpec)
+        .query(querySpec, { enableCrossPartitionQuery: true })
         .toArray();
 
-    if (results.results.length === 0) {
+    const userLogins = results.result;
+
+    if (userLogins.length === 0) {
         return null;
     }
 
-    const token = jwt.sign({ id: results.result[0].id }, secret, { expiresIn: '1d' });
+    if (!hashService.compare(user.password, userLogins[0].password)) {
+        return null;
+    }
+
+    const token = jwt.sign({ id: userLogins[0].id }, secret, { expiresIn: '1d' });
     return token;
 };
 
