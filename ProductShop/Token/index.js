@@ -26,5 +26,9 @@ module.exports = async function (functionContext, req) {
             } else {
                 sendResponse(context, httpStatus.UNAUTHORIZED);
             }
+        })
+        .catch((error) => {
+            context.log(error);
+            sendResponse(context, httpStatus.INTERNAL_SERVER_ERROR);
         });
 };

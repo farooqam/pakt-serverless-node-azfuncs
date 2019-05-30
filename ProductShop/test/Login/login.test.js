@@ -33,14 +33,14 @@ describe('login tests', () => {
             password: '123',
         });
 
-        userService.addUserLogin.withArgs(sinon.match.any).returns(Promise.resolve('foo'));
+        userService.addUserLogin.withArgs(sinon.match.any).returns(Promise.resolve({ id: 'foo', username: 'farooq' }));
 
         await runApiTest.runTest(api,
             context,
             request,
             (res) => {
                 res.status.should.equal(httpStatus.OK);
-                res.body.message.should.equal('User \'farooq\' with password \'123\' is logged in.');
+                res.body.message.should.equal('User \'farooq\' is logged in.');
             });
     });
 
