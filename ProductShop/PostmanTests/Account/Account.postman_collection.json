@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "982a19d0-cd9f-4e98-9089-a423a4ec9ba5",
+		"_postman_id": "529b11df-20b1-47f3-8b13-955a6be1de44",
 		"name": "ProductShop-Account",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -33,7 +33,7 @@
 									"var message = pm.response.json().message;\r",
 									"\r",
 									"pm.test('response contains expected body', function() {\r",
-									"    pm.expect(message).to.equal(`User 'farooq' with password '1234!' is logged in.`);\r",
+									"    pm.expect(message).to.equal(`User 'farooq' is logged in.`);\r",
 									"});\r",
 									""
 								],
@@ -46,13 +46,13 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"type": "text",
+								"value": "application/json"
 							},
 							{
 								"key": "x-functions-key",
-								"value": "{{key}}",
-								"type": "text"
+								"type": "text",
+								"value": "{{key}}"
 							}
 						],
 						"body": {
@@ -60,7 +60,7 @@
 							"raw": "{\n\t\"username\": \"farooq\",\n\t\"password\": \"1234!\"\n}"
 						},
 						"url": {
-							"raw": "http://{{hostname}}/api/account/login?",
+							"raw": "http://{{hostname}}/api/account/login",
 							"protocol": "http",
 							"host": [
 								"{{hostname}}"
@@ -253,6 +253,400 @@
 								"api",
 								"account",
 								"login"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Token",
+			"item": [
+				{
+					"name": "Token happy path",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "02d8c770-8fcd-4249-b697-93ce7ca56fb1",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "988d5076-753f-4356-b3e9-4870f697206c",
+								"exec": [
+									"pm.test('response is ok', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var json = pm.response.json();\r",
+									"\r",
+									"pm.test('response contains expected body', function() {\r",
+									"    pm.expect(json.auth).to.equal(true);\r",
+									"    pm.expect(json.token.length).to.be.above(0);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "x-functions-key",
+								"type": "text",
+								"value": "{{key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"farooq\",\n\t\"password\": \"1234!\"\n}"
+						},
+						"url": {
+							"raw": "http://{{hostname}}/api/token",
+							"protocol": "http",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"token"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Token missing body",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bd3a8f48-7d7e-430a-bc55-0be4e8f2fd45",
+								"exec": [
+									"pm.test('response is bad request', function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"var message = pm.response.json().message;\r",
+									"\r",
+									"pm.test('response contains expected body', function() {\r",
+									"    pm.expect(message).to.equal('Please pass in login information.');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-functions-key",
+								"type": "text",
+								"value": "{{key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{hostname}}/api/account/login?",
+							"protocol": "http",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"login"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Token missing username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7bd6edb-5c4a-490e-a2fe-3c212fc542a0",
+								"exec": [
+									"pm.test('response is bad request', function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"var message = pm.response.json().message;\r",
+									"\r",
+									"pm.test('response contains expected body', function() {\r",
+									"    pm.expect(message).to.equal('Please pass in login information.');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "x-functions-key",
+								"type": "text",
+								"value": "{{key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"password\": \"1234!\"\n}"
+						},
+						"url": {
+							"raw": "http://{{hostname}}/api/account/login?",
+							"protocol": "http",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"login"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Token missing password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cf445efb-5afa-417d-add9-e7e2bce20eb2",
+								"exec": [
+									"pm.test('response is bad request', function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"var message = pm.response.json().message;\r",
+									"\r",
+									"pm.test('response contains expected body', function() {\r",
+									"    pm.expect(message).to.equal('Please pass in login information.');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "x-functions-key",
+								"type": "text",
+								"value": "{{key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"farooq\"\n}"
+						},
+						"url": {
+							"raw": "http://{{hostname}}/api/account/login?",
+							"protocol": "http",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"login"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Token incorrect username",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "02d8c770-8fcd-4249-b697-93ce7ca56fb1",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "988d5076-753f-4356-b3e9-4870f697206c",
+								"exec": [
+									"pm.test('response is ok', function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "x-functions-key",
+								"type": "text",
+								"value": "{{key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"foo\",\n\t\"password\": \"1234!\"\n}"
+						},
+						"url": {
+							"raw": "http://{{hostname}}/api/token",
+							"protocol": "http",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"token"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Token incorrect password",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "02d8c770-8fcd-4249-b697-93ce7ca56fb1",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "988d5076-753f-4356-b3e9-4870f697206c",
+								"exec": [
+									"pm.test('response is ok', function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "x-functions-key",
+								"type": "text",
+								"value": "{{key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"farooq\",\n\t\"password\": \"foo\"\n}"
+						},
+						"url": {
+							"raw": "http://{{hostname}}/api/token",
+							"protocol": "http",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"token"
 							],
 							"query": [
 								{

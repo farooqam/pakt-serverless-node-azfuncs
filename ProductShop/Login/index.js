@@ -20,7 +20,7 @@ module.exports = async function (functionContext, req) {
     }
 
     await userService.addUserLogin(req.body)
-        .then(() => {
-            sendResponse(context, httpStatus.OK, { message: `User '${username}' with password '${password}' is logged in.` });
+        .then((user) => {
+            sendResponse(context, httpStatus.OK, { message: `User '${user.username}' is logged in.` });
         });
 };
